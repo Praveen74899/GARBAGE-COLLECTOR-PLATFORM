@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+    <link href="./assets/img/logo.jpg" rel="icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100%;
+            width: 100%; /* Adjust the map height as needed */
+        }
+        .bg-info {
+            background-color: green;
+            margin: 12px;
+            float: right;
+        }
+        .btn-secondary {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+        .action {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-info clearfix">
+        <a href="contact.html" target="_blank">
+            <button type="button" class="btn btn-secondary float-start">Click to message</button>
+        </a>
+    </div>
+    <div class="action">
+        <h1>Alert</h1>
+    </div>
+    <div class="container">
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([20.2951, 85.8245], 15); // Replace with your initial map coordinates and zoom level.
+        var userCoordinates;
+
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        }).addTo(map);
+
+        // Get the user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                userCoordinates = [position.coords.latitude, position.coords.longitude];
+
+                // Log the coordinates to the console
+                console.log("User Location Coordinates: " + userCoordinates[0] + ", " + userCoordinates[1]);
+
+                L.marker(userCoordinates).addTo(map)
+                    .bindPopup("Your Location")
+                    .openPopup();
+            });
+        }
+    </script>
+</body>
+</html>
